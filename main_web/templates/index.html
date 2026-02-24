@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yayasan Rumah Konservasi Laut</title>
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'wwd.css' %}">
+    <style>
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), 
+                        url("{% static 'asset/HeroBg.webp' %}");
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>MEMULIHKAN DAN MENJAGA KEHIDUPAN BAWAH LAUT</h1>
+            <p>
+                Upaya berkelanjutan untuk melindungi ekosistem laut melalui pendekatan berbasis 
+                Nature-Based Solutions yang kolaboratif, berdampak nyata, dan berkelanjutan. 
+            </p>
+            <button class="btn-watch"></button>
+        </div>
+    </section>
+
+    <section class="status-bar">
+        <div class="status-item">
+            <h2 id="val-locations" class="gradient-text">-</h2>
+            <p>Locations</p>
+        </div>
+        <div class="status-item">
+            <h2 id="val-years" class="gradient-text">-</h2>
+            <p>Years</p>
+        </div>
+        <div class="status-item">
+            <h2 id="val-adopter" class="gradient-text">-</h2>
+            <p>Adopter</p>
+        </div>
+        <div class="status-item">
+            <h2 id="val-ecosystems" class="gradient-text">-</h2>
+            <p>Ecosystems Restored</p>
+        </div>
+    </section>
+
+    <section id="explore" class="fact-coral" style="background: url('{% static 'asset/factbackground.png' %}') no-repeat center center; background-size: cover;">
+        <div class="fact-container">
+            <div class="fact-header-row">
+                <div class="fact-text">
+                    <p class="fact-description">
+                        Pemutihan karang membuat pemulihan membutuhkan waktu hingga 10-15 tahun, 
+                        sementara lebih dari 50% terumbu karang dunia telah mengalami kerusakan 
+                        dalam 30 tahun terakhir.
+                    </p>
+                </div>
+                
+                <div class="status-buttons-inline">
+                    <img src="{% static 'asset/ButtonHealty.webp' %}" alt="Healthy" class="btn-3d active" onclick="changeModel('normal')">
+                    <img src="{% static 'asset/Buttonbleaching.webp' %}" alt="Bleaching" class="btn-3d" onclick="changeModel('bleached')">
+                    <img src="{% static 'asset/ButtonDead.webp' %}" alt="Dead Coral" class="btn-3d" onclick="changeModel('dead')">
+                </div>
+            </div>
+    
+            <div id="container-3d"></div>
+    
+            <div class="type-buttons">
+                <img src="{% static 'asset/ButtonCoral.webp' %}" alt="Coral" class="btn-type">
+                <img src="{% static 'asset/ButtonSeagrass.webp' %}" alt="Seagrass" class="btn-type">
+                <img src="{% static 'asset/ButtonMangrove.webp' %}" alt="Mangrove" class="btn-type">
+                <img src="{% static 'asset/ButtonClam.webp' %}" alt="Giant Clam" class="btn-type">
+            </div>
+        </div>
+    </section>
+
+    <section id="learn" class="why-coral">
+        <div class="slideshow-container">
+            <div class="slide fade active" style="background-image: url('{% static 'asset/WHY1.png' %}');"></div>
+            <div class="slide fade" style="background-image: url('{% static 'asset/WHY2.png' %}');"></div>
+            <div class="slide fade" style="background-image: url('{% static 'asset/WHY3.png' %}');"></div>
+            <div class="slide fade" style="background-image: url('{% static 'asset/WHY4.png' %}');"></div>
+        </div>
+        <div class="why-content-wrapper">
+            <h2 class="why-title">WHY CORAL REEFS MATTER</h2>
+            <div class="frosted-bar">
+                <div class="bar-item">
+                    <h3>Safeguarding coastal communities</h3>
+                    <p>Coral reefs act as natural barriers, protecting coastal areas from waves, erosion, and extreme weather.</p>
+                </div>
+                <div class="divider"></div>
+                <div class="bar-item">
+                    <h3>More biodiversity than rainforests</h3>
+                    <p>Despite covering less than 1% of the ocean floor, coral reefs support an extraordinary diversity of marine life.</p>
+                </div>
+                <div class="divider"></div>
+                <div class="bar-item">
+                    <h3>Healthy reefs, healthy people</h3>
+                    <p>Strong reef ecosystems sustain fisheries, tourism, and food security for millions worldwide.</p>
+                </div>
+                <div class="divider"></div>
+                <div class="bar-item">
+                    <h3>Long-term economic value</h3>
+                    <p>Healthy reefs create sustainable livelihoods while preserving marine balance for the future.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="take-action" class="take-action">
+        <div class="action-header">
+            <h2 class="gradient-text">TAKE ACTION FOR THE REEF TODAY</h2>
+            <p>Every action counts. Whether you adopt, visit, or donate, you become part of a global effort to restore our ocean.</p>
+        </div>
+        <div class="action-container">
+            <div class="action-card">
+                <img src="{% static 'asset/action/Adoptimage.webp' %}" alt="Adopt" class="card-shape-img">
+                <div class="card-content">
+                    <h3>ADOPT</h3>
+                    <p>Choose a coral to adopt and support its growth through our reef restoration program.</p>
+                    <a href="#" class="action-btn-link">
+                        <img src="{% static 'asset/action/ButtonAdopt.webp' %}" alt="Adopt a Coral" class="btn-img-asset">
+                    </a>
+                </div>
+            </div>
+            <div class="action-card">
+                <img src="{% static 'asset/action/TOURIMAGE.webp' %}" alt="Tour" class="card-shape-img">
+                <div class="card-content">
+                    <h3>TOUR</h3>
+                    <p>Explore conservation sites and experience reef restoration activities firsthand.</p>
+                    <a href="#" class="action-btn-link">
+                        <img src="{% static 'asset/action/ButtonTour.webp' %}" alt="Join a Reef Tour" class="btn-img-asset">
+                    </a>
+                </div>
+            </div>
+            <div class="action-card">
+                <img src="{% static 'asset/action/Donateimage.webp' %}" alt="Donate" class="card-shape-img">
+                <div class="card-content">
+                    <h3>DONATE</h3>
+                    <p>Your donation helps scale restoration efforts and protect marine ecosystems.</p>
+                    <a href="#" class="action-btn-link">
+                        <img src="{% static 'asset/action/ButtonDonate.webp' %}" alt="Make an Impact" class="btn-img-asset">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="core" class="core-section">
+        <div class="core-hero">
+            <img src="{% static 'asset/Core/Core.webp' %}" alt="Conservation Team" class="core-bg-img">
+            <div class="core-overlay-text">
+                <h2 class="gradient-text">C.O.R.E</h2>
+                <p>C.O.R.E is our guiding framework to ensure every initiative creates long-term impact for the ocean.</p>
+            </div>
+        </div>
+        <div class="core-grid">
+            <div class="core-card">
+                <img src="{% static 'asset/Core/C.webp' %}" alt="C" class="core-icon">
+                <h3>Conservation</h3>
+                <p>merepresentasikan komitmen untuk menjaga, memulihkan, dan melindungi ekosistem laut secara berkelanjutan.</p>
+            </div>
+            <div class="core-card">
+                <img src="{% static 'asset/Core/O.webp' %}" alt="O" class="core-icon">
+                <h3>Oceanography</h3>
+                <p>menggambarkan fokus kami pada penelitian dan pemahaman kondisi laut, sehingga setiap upaya konservasi dapat dilakukan secara lebih tepat.</p>
+            </div>
+            <div class="core-card">
+                <img src="{% static 'asset/Core/R.webp' %}" alt="R" class="core-icon">
+                <h3>Restoration</h3>
+                <p>Restoration menggambarkan upaya dalam memulihkan ekosistem dari akar masalah untuk menciptakan dampak jangka panjang.</p>
+            </div>
+            <div class="core-card">
+                <img src="{% static 'asset/Core/E.webp' %}" alt="E" class="core-icon">
+                <h3>Education</h3>
+                <p>merepresentasikan komitmen untuk menjaga, memulihkan, dan melindungi ekosistem laut secara berkelanjutan.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="shop" class="shop-section">
+        <div class="shop-container frosted-card">
+            <div class="shop-gallery-side">
+                <div class="side-img-wrapper"><img src="{% static 'asset/shop/Produk2.png' %}" alt="Product Thumbnail"></div>
+                <div class="side-img-wrapper"><img src="{% static 'asset/shop/Produk2.png' %}" alt="Product Thumbnail"></div>
+                <div class="side-img-wrapper"><img src="{% static 'asset/shop/Produk2.png' %}" alt="Product Thumbnail"></div>
+            </div>
+            <div class="shop-main-display">
+                <img src="{% static 'asset/shop/Produk.png' %}" alt="Featured Product">
+            </div>
+            <div class="shop-content">
+                <h2 class="shop-title">EXPLORE OUR COLLECTION</h2>
+                <p class="shop-desc">
+                    Setiap produk dirancang dengan makna. Terinspirasi dari laut dan gerakan konservasi, 
+                    koleksi ini menjadi simbol kontribusi kecil dengan dampak yang lebih besar untuk ocean sustainability.
+                </p>
+                <a href="#" class="shop-now-btn">
+                    <img src="{% static 'asset/shop/Buttonshop.webp' %}" alt="Shop Now">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="follow-journey">
+        <div class="ig-header">
+            <h2 class="section-label">FOLLOW OUR JOURNEY</h2>
+            <div id="instagram-feed" class="ig-grid">
+                <div class="ig-post"><a href="https://www.instagram.com/padma.itera" target="_blank"><img src="{% static 'asset/follow/Content1.webp' %}" alt="IG Post"></a></div>
+                <div class="ig-post"><a href="https://www.instagram.com/padma.itera" target="_blank"><img src="{% static 'asset/follow/Content2.webp' %}" alt="IG Post"></a></div>
+                <div class="ig-post"><a href="https://www.instagram.com/padma.itera" target="_blank"><img src="{% static 'asset/follow/Content3.webp' %}" alt="IG Post"></a></div>
+                <div class="ig-post"><a href="https://www.instagram.com/padma.itera" target="_blank"><img src="{% static 'asset/follow/Content4.webp' %}" alt="IG Post"></a></div>
+            </div>
+        </div>
+        <div class="journey-main">
+            <div class="journey-slideshow">
+                <div class="journey-slide fade active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('{% static 'asset/follow/1.webp' %}');"></div>
+                <div class="journey-slide fade" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('{% static 'asset/follow/2.webp' %}');"></div>
+                <div class="journey-slide fade" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('{% static 'asset/follow/3.webp' %}');"></div>
+            </div>
+            <div class="journey-content">
+                <h1 class="journey-title">FOLLOW <br> OUR <br> JOURNEY</h1>
+                <p class="journey-desc">
+                    Dari laut hingga ke komunitas, perjalanan kami adalah tentang aksi nyata, pembelajaran, dan kolaborasi untuk menjaga ekosistem laut tetap hidup. Join us and see how conservation happens underwater.
+                </p>
+                <div class="slideshow-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="join-movement" style="background: url('{% static 'asset/factbackground.png' %}') no-repeat center center; background-size: cover;">
+        <div class="movement-container">
+            <div class="movement-header">
+                <h2 class="gradient-text">JOIN OUR MOVEMENT</h2>
+                <p>Be part of a growing community that cares about the ocean. Dapatkan update terbaru seputar konservasi, restorasi terumbu karang, dan aktivitas kami langsung ke email kamu.</p>
+            </div>
+            <div class="email-box">
+                <input type="email" placeholder="YOUR EMAIL" id="user-email">
+                <button type="button" class="btn-join" onclick="submitMovement()">JOIN</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="{% static 'icon/Logo.png' %}" alt="Logo" class="footer-logo">
+                <p class="footer-address">
+                    Jl. Terumbu Karang No. 123,<br>
+                    Kec. Konservasi Laut, Bandar Lampung,<br>
+                    Lampung, Indonesia 35141
+                </p>
+            </div>
+            <div class="footer-links">
+                <h3>Explore</h3>
+                <ul>
+                    <li><a href="#">Track my Adopt</a></li>
+                    <li><a href="#">Explore</a></li>
+                    <li><a href="#">learn</a></li>
+                    <li><a href="#">Take Action</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Learn</h3>
+                <ul>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Book a Tour</a></li>
+                    <li><a href="#">Donate</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><img src="{% static 'icon/Instagram.png' %}" alt="Instagram"></a>
+                    <a href="#"><img src="{% static 'icon/Tiktok.png' %}" alt="Tiktok"></a>
+                    <a href="#"><img src="{% static 'icon/Youtube.png' %}" alt="Youtube"></a>
+                </div>
+                <p class="copyright">&copy; 2025 Padma Itera. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

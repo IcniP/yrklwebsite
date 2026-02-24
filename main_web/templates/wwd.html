@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What We Do - YRKL</title>
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'wwd.css' %}">
+    <style>
+        .wwd-hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("{% static 'asset/wwd/head.webp' %}");
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <section class="wwd-hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <h1>WHAT WE DO</h1>
+            </div>
+            <div class="hero-right">
+                    <p>
+                        A.pincii
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="news-section">
+        <div class="news-container">
+            <aside class="news-sidebar">
+                <div class="sidebar-item">
+                    <h3>RUMAH TERUMBU</h3>
+                    <p>Contoh Placeholder aja ini</p>
+                </div>
+            </aside>
+
+            <section class="news-grid" id="news-grid-display">
+                </section>
+        </div>
+    </main>
+
+    <script src="{% static 'script.js' %}"></script>
+    <script src="{% static 'wwd.js' %}"></script>
+</body>
+</html>

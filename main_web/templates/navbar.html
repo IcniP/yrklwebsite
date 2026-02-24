@@ -1,0 +1,82 @@
+{% load static %}
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-logo">
+            <img src="{% static 'icon/Logo.png' %}" alt="Yayasan Rumah Konservasi Laut">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Track My Adopt</a></li>
+            
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="drop-trigger">Explore</a>
+                <div class="dropdown-content">
+                    <div class="dropdown-inner">
+                        <div class="column">
+                            <h3>Explore Our Activity</h3>
+                            <a href="{% url 'wwd' %}">What We Do</a>
+                        </div>
+                        <div class="column no-title"><a href="#">Research</a></div>
+                        <div class="column no-title"><a href="#">Journal</a></div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="drop-trigger">Learn</a>
+                <div class="dropdown-content">
+                    <div class="dropdown-inner">
+                        <div class="column">
+                            <h3>Learn</h3>
+                            <a href="#">About Us</a>
+                        </div>
+                        <div class="column no-title"><a href="#">C.O.R.E</a></div>
+                        <div class="column no-title"><a href="#">FAQ's</a></div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="drop-trigger">Grow With Us</a>
+                <div class="dropdown-content">
+                    <div class="dropdown-inner">
+                        <div class="column">
+                            <h3>Lets Grow With Us</h3>
+                            <a href="#">Adopt a Coral</a>
+                            <a href="#">Adopt a Seagrass</a>
+                        </div>
+                        <div class="column no-title"><a href="#">Adopt a Mangrove</a></div>
+                        <div class="column no-title"><a href="#">Adopt a Giant Clam</a></div>
+                        <div class="column no-title"><a href="#">Partnership</a></div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="mobile-only-actions">
+                <div class="nav-actions-mobile">
+                    <a href="#" class="btn-shop">SHOP</a>
+                    <a href="#" class="btn-tour">BOOK A TOUR</a>
+                    <a href="#" class="btn-donate">DONATE</a>
+                </div>
+            </li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="btn-group">
+                <a href="#shop" class="btn-shop">SHOP</a>
+                <a href="#" class="btn-tour">BOOK A TOUR</a>
+                <a href="#" class="btn-donate">DONATE</a>
+            </div>
+            <div class="nav-icons">
+                <img src="{% static 'icon/Shop.png' %}" alt="Cart" class="icon">
+                <img src="{% static 'icon/Login.png' %}" alt="User" class="icon" id="login-btn">
+            </div>
+        </div>
+    </div>
+</nav>

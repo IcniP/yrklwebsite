@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Assets & 3D Models (Sesuai permintaan karena file besar)
+static/3d/
+3d/
+*.gltf
+*.glb
+*.bin
+
+# Node (Jika masih ada sisa-sisa folder node)
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
