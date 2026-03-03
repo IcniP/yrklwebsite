@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="{% static 'script.js' %}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>What We Do - YRKL</title>
@@ -10,9 +13,9 @@
     <link rel="stylesheet" href="{% static 'wwd.css' %}">
     <style>
         .wwd-hero {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("{% static 'asset/wwd/head.webp' %}");
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url("{% static 'asset/wwd/head.webp' %}") no-repeat center center;
             background-size: cover;
-            background-position: center;
         }
     </style>
 </head>
@@ -25,10 +28,8 @@
                 <h1>WHAT WE DO</h1>
             </div>
             <div class="hero-right">
-                    <p>
-                        A.pincii
-                    </p>
-                </div>
+                <img src="{% static 'icon/Logo.png' %}" style="width: 80px; margin-bottom: 20px;">
+                <p>Upaya berkelanjutan untuk melindungi ekosistem laut melalui pendekatan berbasis Nature-Based Solutions yang kolaboratif.</p>
             </div>
         </div>
     </section>
@@ -36,18 +37,34 @@
     <main class="news-section">
         <div class="news-container">
             <aside class="news-sidebar">
+                {% for item in articles %}
                 <div class="sidebar-item">
-                    <h3>RUMAH TERUMBU</h3>
-                    <p>Contoh Placeholder aja ini</p>
+                    <h3>{{ item.title|upper }}</h3>
+                    <p>{{ item.title|truncatewords:10 }}</p>
                 </div>
+                {% empty %}
+                <p style="color: #666;">Belum ada berita.</p>
+                {% endfor %}
             </aside>
 
             <section class="news-grid" id="news-grid-display">
-                </section>
+                {% for item in articles %}
+                <div class="news-card" onclick="location.href='{% url 'article_detail' item.pk %}'">
+                    <div class="image-container">
+                        {% if item.headline_image %}
+                            <img src="{{ item.headline_image.url }}" alt="{{ item.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ item.title|upper }}</h3>
+                        <p>{{ item.date|date:"d F Y" }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
         </div>
     </main>
 
-    <script src="{% static 'script.js' %}"></script>
-    <script src="{% static 'wwd.js' %}"></script>
+    {% include 'footer.html' %}
 </body>
 </html>

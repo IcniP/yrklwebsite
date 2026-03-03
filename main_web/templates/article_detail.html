@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+    <meta charset="UTF-8">
+    <title>{{ article.title }} - YRKL</title>
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+    <style>
+        .article-container { 
+            max-width: 900px; 
+            margin: 120px auto; 
+            padding: 20px; 
+            color: white; 
+            display: flex;
+            flex-direction: column;
+        }
+        .header-content {
+            display: flex;
+            flex-direction: column; /* Memastikan elemen berjejer ke bawah */
+            align-items: center;    /* Teks rata tengah (opsional, ganti ke flex-start jika ingin rata kiri) */
+            margin-bottom: 30px;
+        }
+        .main-img { 
+            width: 100%; 
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 15px; 
+            margin-bottom: 20px; /* Jarak antara gambar dan teks di bawahnya */
+        }
+        .article-title {
+            font-size: 2.5rem;
+            margin: 10px 0;
+            text-transform: uppercase;
+        }
+        .article-date {
+            color: #8899a6;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .article-body { 
+            line-height: 1.8; 
+            font-size: 1.1rem; 
+            color: #ccc; 
+        }
+        .sub-img { 
+            width: 100%; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <div class="article-container">
+        <header class="header-content">
+            {% if article.headline_image %}
+            <img src="{{ article.headline_image.url }}" class="main-img">
+            {% endif %}
+
+            <h1 class="article-title">{{ article.title }}</h1>
+            <p class="article-date">{{ article.date|date:"d F Y" }}</p>
+        </header>
+
+        <hr style="border: 0.5px solid #333; margin-bottom: 30px; width: 100%;">
+
+        <div class="article-body">
+            {% for content in article.contents.all %}
+                {% if content.text_content %}
+                    <p>{{ content.text_content|linebreaks }}</p>
+                {% endif %}
+                
+                {% if content.image_content %}
+                    <img src="{{ content.image_content.url }}" class="sub-img">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

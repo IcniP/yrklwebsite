@@ -12,6 +12,17 @@ class EmailMovement(models.Model):
 
 class News(models.Model):
     title = models.CharField(max_length=255)
-    date = models.CharField(max_length=100)
-    headline_image = models.TextField() # Menyimpan Base64 sesuai script lama
-    content_data = models.JSONField() # Menyimpan struktur konten berita
+    date = models.DateField(auto_now_add=True)
+    headline_image = models.ImageField(upload_to='news/')
+
+    def __str__(self):
+        return self.title
+
+class NewsContent(models.Model):
+    news = models.ForeignKey(News, related_name='contents', on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=0)
+    text_content = models.TextField(blank=True, null=True)
+    image_content = models.ImageField(upload_to='news_sub/', blank=True, null=True)
+
+    class Meta:
+        ordering = ['order']

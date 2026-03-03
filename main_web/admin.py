@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Stats, EmailMovement
+from .models import Stats, EmailMovement, News , NewsContent
 
 # Menampilkan data statistik di dashboard
 @admin.register(Stats)
@@ -17,3 +17,11 @@ class StatsAdmin(admin.ModelAdmin):
 class EmailMovementAdmin(admin.ModelAdmin):
     list_display = ('email', 'created_at')
     readonly_fields = ('created_at',)
+
+class NewsContentInline(admin.TabularInline):
+    model = NewsContent
+    extra = 1 
+
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    inlines = [NewsContentInline]

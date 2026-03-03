@@ -1,18 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import News, Stats, EmailMovement
 import json
 from django.views.decorators.csrf import csrf_exempt
 
-# 1. Pastikan fungsi 'index' ini ada
 def index(request):
     return render(request, 'index.html')
 
-# 2. Pastikan fungsi 'wwd' ini ada
+# Fungsi untuk menampilkan daftar berita (Halaman Kiri)
 def wwd(request):
-    return render(request, 'wwd.html')
+    articles = News.objects.all().order_by('-id')
+    return render(request, 'wwd.html', {'articles': articles})
 
-# API: Ambil Data Statistik
+# Fungsi untuk detail berita (Halaman Kanan)
+def article_detail(request, pk):
+    article = get_object_or_404(News, pk=pk)
+    return render(request, 'article_detail.html', {'article': article})
+
+# API Endpoints tetap dipertahankan
 def get_stats(request):
     obj = Stats.objects.first()
     data = {
@@ -23,21 +28,12 @@ def get_stats(request):
     }
     return JsonResponse(data)
 
-# API: Ambil Daftar Berita
-def get_news(request):
-    news = list(News.objects.all().values().order_by('-id'))
-    return JsonResponse(news, safe=False)
-
-# API: Join Movement (Email)
 @csrf_exempt
 def join_movement(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            email = data.get('email')
-            if email:
-                EmailMovement.objects.get_or_create(email=email)
-                return JsonResponse({'message': 'Berhasil bergabung!'})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+        data = json.loads(request.body)
+        email = data.get('email')
+        if email:
+            EmailMovement.objects.get_or_create(email=email)
+            return JsonResponse({'message': 'Berhasil bergabung!'})
     return JsonResponse({'error': 'Invalid request'}, status=400)

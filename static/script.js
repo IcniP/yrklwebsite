@@ -1,63 +1,74 @@
-// ==========================================
-// 1. NAVBAR & DROPDOWN (DIPERBAIKI)
-// ==========================================
-function initNavbarFeatures() {
-    const triggers = document.querySelectorAll('.drop-trigger');
-    const dropdowns = document.querySelectorAll('.dropdown');
+/* ==========================================
+   SCRIPT.JS - YRKL WEBSITE (FULL OPTIMIZED)
+   ========================================== */
+
+// 1. INISIALISASI NAVIGASI & LOGIN
+function initNavbar() {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.querySelector('.nav-links');
     const loginBtn = document.getElementById('login-btn');
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    // Link Login ke Admin
     if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
-            window.location.href = '/admin/';
-        });
+        loginBtn.style.cursor = "pointer";
+        loginBtn.onclick = () => { window.location.href = '/admin/'; };
     }
 
-    triggers.forEach(trigger => {
-        trigger.addEventListener('click', function (e) {
+    // Mobile Hamburger Menu
+    if (hamburger && navLinks) {
+        hamburger.onclick = (e) => {
             e.stopPropagation();
-            const parent = this.parentElement;
-            const wasActive = parent.classList.contains('is-active');
-            dropdowns.forEach(nav => nav.classList.remove('is-active'));
-            if (!wasActive) parent.classList.add('is-active');
-        });
-    });
-
-    document.addEventListener('click', () => {
-        dropdowns.forEach(nav => nav.classList.remove('is-active'));
-    });
-
-    if (hamburger) {
-        hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-        });
+        };
+    }
+
+    // Dropdown Logic (Click to Open)
+    document.querySelectorAll('.drop-trigger').forEach(trigger => {
+        trigger.onclick = (e) => {
+            e.stopPropagation();
+            const parent = trigger.parentElement;
+            const wasActive = parent.classList.contains('is-active');
+
+            // Tutup dropdown lain yang sedang terbuka
+            dropdowns.forEach(d => d.classList.remove('is-active'));
+            
+            // Toggle dropdown yang diklik
+            if (!wasActive) parent.classList.add('is-active');
+        };
+    });
+
+    // Klik di luar untuk menutup semua menu
+    document.addEventListener('click', () => {
+        dropdowns.forEach(d => d.classList.remove('is-active'));
+        if (navLinks) navLinks.classList.remove('active');
+    });
+}
+
+// 2. LOGIKA STATISTIK (DARI DATABASE DJANGO)
+function loadStats() {
+    const statElements = ['val-locations', 'val-years', 'val-adopter', 'val-ecosystems'];
+    const exists = statElements.some(id => document.getElementById(id));
+    
+    if (exists) {
+        fetch('/api/stats/')
+            .then(res => res.json())
+            .then(data => {
+                statElements.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = data[id.replace('val-', '')] || 0;
+                });
+            })
+            .catch(err => console.error("Gagal memuat statistik:", err));
     }
 }
 
-// ==========================================
-// 2. STATISTICS (DIPERBAIKI UNTUK DJANGO)
-// ==========================================
-function loadStatsFromServer() {
-    fetch('/api/stats/') // URL Django
-        .then(res => res.json())
-        .then(data => {
-            if (document.getElementById('val-locations')) {
-                document.getElementById('val-locations').innerText = data.locations;
-                document.getElementById('val-years').innerText = data.years;
-                document.getElementById('val-adopter').innerText = data.adopter;
-                document.getElementById('val-ecosystems').innerText = data.ecosystems;
-            }
-        });
-}
-
-// ==========================================
-// 3. 3D CORAL LOGIC (DIPERBAIKI PATH-NYA)
-// ==========================================
+// 3. LOGIKA 3D CORAL (THREE.JS)
 let scene, camera, renderer, coralModel;
 
 function init3D() {
     const container = document.getElementById('container-3d');
-    if (!container) return;
+    if (!container || typeof THREE === 'undefined') return;
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -75,19 +86,15 @@ function init3D() {
 function loadCoralModel(status) {
     if (coralModel) scene.remove(coralModel);
     const loader = new THREE.GLTFLoader();
-    
-    // PERHATIKAN: Tambahkan /static/ di depan path agar Django bisa menemukannya
+    // Path absolut menggunakan /static/ agar tidak error di halaman sub-url
     const modelPath = `/static/3d/${status}/Branchingcoral/Coral.gltf`;
-    
-    loader.load(modelPath, function (gltf) {
+
+    loader.load(modelPath, (gltf) => {
         coralModel = gltf.scene;
         const box = new THREE.Box3().setFromObject(coralModel);
         coralModel.position.sub(box.getCenter(new THREE.Vector3()));
         scene.add(coralModel);
-        console.log("Model 3D berhasil dimuat:", status);
-    }, undefined, (error) => {
-        console.error('Gagal memuat model 3D dari:', modelPath, error);
-    });
+    }, undefined, (err) => console.error("Model error:", modelPath, err));
 }
 
 function animate3D() {
@@ -97,15 +104,35 @@ function animate3D() {
 }
 
 function changeModel(status) {
-    const btns = document.querySelectorAll('.status-buttons-inline .btn-3d');
-    btns.forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.btn-3d').forEach(btn => btn.classList.remove('active'));
     if (event && event.currentTarget) event.currentTarget.classList.add('active');
     loadCoralModel(status);
 }
 
-// ==========================================
-// 4. JOIN MOVEMENT
-// ==========================================
+// 4. LOGIKA SLIDESHOW (WHY CORAL & JOURNEY)
+function initSlideshows() {
+    const runSlides = (selector, interval) => {
+        const slides = document.querySelectorAll(selector);
+        const dots = document.querySelectorAll('.dot');
+        if (slides.length <= 1) return;
+
+        let current = 0;
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            if (dots[current] && selector.includes('journey')) dots[current].classList.remove('active');
+            
+            current = (current + 1) % slides.length;
+            
+            slides[current].classList.add('active');
+            if (dots[current] && selector.includes('journey')) dots[current].classList.add('active');
+        }, interval);
+    };
+
+    runSlides('.why-coral .slide', 3000);
+    runSlides('.journey-slide', 4000);
+}
+
+// 5. JOIN MOVEMENT (POST TO DJANGO)
 function submitMovement() {
     const emailInput = document.getElementById('user-email');
     if (!emailInput || !emailInput.value) return alert("Masukkan email Anda!");
@@ -122,43 +149,10 @@ function submitMovement() {
     });
 }
 
-// ==========================================
-// 5. SLIDESHOW LOGIC (WHY CORAL & JOURNEY)
-// ==========================================
-function initSlideshows() {
-    // Slideshow untuk Section "Why Coral Reefs Matter"
-    const whySlides = document.querySelectorAll('.why-coral .slide');
-    if (whySlides.length > 0) {
-        let currentWhySlide = 0;
-        setInterval(() => {
-            whySlides[currentWhySlide].classList.remove('active');
-            currentWhySlide = (currentWhySlide + 1) % whySlides.length;
-            whySlides[currentWhySlide].classList.add('active');
-        }, 3000); // Ganti setiap 3 detik
-    }
-
-    // Slideshow untuk Section "Follow Our Journey"
-    const journeySlides = document.querySelectorAll('.journey-slide');
-    const dots = document.querySelectorAll('.dot');
-    if (journeySlides.length > 0) {
-        let currentJourneySlide = 0;
-        setInterval(() => {
-            // Update Slide
-            journeySlides[currentJourneySlide].classList.remove('active');
-            if(dots[currentJourneySlide]) dots[currentJourneySlide].classList.remove('active');
-            
-            currentJourneySlide = (currentJourneySlide + 1) % journeySlides.length;
-            
-            journeySlides[currentJourneySlide].classList.add('active');
-            if(dots[currentJourneySlide]) dots[currentJourneySlide].classList.add('active');
-        }, 4000); // Ganti setiap 4 detik
-    }
-}
-
-// Tambahkan initSlideshows() ke dalam Event Listener DOMContentLoaded yang sudah ada
-window.addEventListener('DOMContentLoaded', () => {
-    initNavbarFeatures();
-    if (typeof THREE !== 'undefined') init3D();
-    loadStatsFromServer();
-    initSlideshows(); // Tambahkan baris ini
+// EXECUTION ON LOAD
+window.addEventListener('load', () => {
+    initNavbar();
+    init3D();
+    loadStats();
+    initSlideshows();
 });
